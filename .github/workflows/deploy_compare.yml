@@ -37,7 +37,10 @@ Docker Deployment took $((end_time - start_time)) seconds"
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.NON_DOCKER_HOST }} "
         cd /home/ubuntu/github_action_tutorial
         git pull
-        
+        source env/bin/activate
+        pip install -r requirements.txt
+        python manage.py migrate
+        python manage.py collectstatic --no-input
         sudo systemctl restart myapp
         "
         end_time=$(date +%s)
